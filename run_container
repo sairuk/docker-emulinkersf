@@ -1,0 +1,16 @@
+#!/bin/bash
+
+BASEDIR=${1:-$(pwd)}
+CONTAINER=$(basename $BASEDIR)
+
+docker stop $CONTAINER
+docker rm $CONTAINER
+
+# launch new
+docker run -d \
+--publish 27888:27888/tcp \
+--publish 27888:27888/udp \
+--publish 27889-27919:27889-27919/udp \
+--name $CONTAINER \
+$CONTAINER:latest
+

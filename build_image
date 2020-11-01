@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -u
+
+BASEDIR=${1:-$(pwd)}
+
+cd "$BASEDIR"
+sudo docker build . -t $(basename $BASEDIR)
+
