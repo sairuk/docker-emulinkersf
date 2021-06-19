@@ -1,11 +1,11 @@
-FROM multiarch/debian-debootstrap:i386-stretch
+FROM multiarch/debian-debootstrap:i386-bullseye-slim
 MAINTAINER sairuk
 ARG USER=user
 ARG UID=1004
 ARG APPNAME=emulinker
-ARG APPVER=0.90.0
-ARG APPFILE=EmuLinkerSF.zip
-ARG APPURL=https://github.com/God-Weapon/EmuLinkerSF/releases/download/${APPVER}/${APPFILE}
+ARG APPVER=92.4
+ARG APPFILE=EmuLinkerSF_v${APPVER}.zip
+ARG APPURL=https://github.com/God-Weapon/EmuLinkerSF/releases/download/0.${APPVER}/${APPFILE}
 ARG SRVDIR=/srv/${APPNAME}
 
 RUN apt-get update && apt-get -y upgrade
@@ -16,7 +16,7 @@ RUN apt-get -y install \
 
 RUN mkdir -p ${SRVDIR} /usr/share/man/man1/ /usr/share/man/man7/
 RUN apt-cache search jre
-RUN apt-get -y install ca-certificates-java openjdk-8-jre-headless
+RUN apt-get -y install ca-certificates-java openjdk-11-jre-headless
 
 RUN curl -sLo /tmp/${APPFILE} ${APPURL} \
     && unzip /tmp/${APPFILE} -d ${SRVDIR} \
@@ -29,7 +29,7 @@ RUN useradd -m -s /bin/bash -u ${UID} ${USER}
 
 COPY _custom/. ${SRVDIR}
 
-RUN chown ${USER}: ${SRVDIR}
+RUN chown -R ${USER}: ${SRVDIR}
 
 USER ${USER}
 
